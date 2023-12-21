@@ -94,8 +94,7 @@ HumanFriends.txt  Pets.txt
 
 3. Подключить дополнительный репозиторий MySQL. Установить любой пакет из этого репозитория.
 
-![Task 3](https://user-images.githubusercontent.com/99810114/221401204-319e6e99-7b30-4da1-a0ca-db5d821146c8.jpg)
-![Task 4](https://user-images.githubusercontent.com/99810114/221401211-7563ea97-23dc-4f39-807a-fc6e4a68b598.jpg)
+![Task 3](/Task3.png)
 
 4. Установить и удалить deb-пакет с помощью dpkg.
 
