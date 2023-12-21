@@ -2,21 +2,21 @@
 
 mkdir Kennel  
 cd ~/Kennel  
-cat > home_animals  
-cat > pack_animals  
-cat home_animals pack_animals > animals  
-cat animals  
-mv animals mans_friends  
-ls -ali
+cat > Pets.txt  
+cat > PackAnimals.txt  
+cat Pets.txt >> PackAnimals.txt  
+cat PackAnimals.txt  
+mv PackAnimals.txt HumanFriends.txt  
+ls
 
 ## Task 2
 
 cd ..  
 mkdir Kennel_system  
 cd ~/Kennel  
-mv mans_friends ~/Kennel_system  
+mv HumanFriends.txt ~/Kennel_system  
 cd ~/Kennel_system  
-ls -ali
+ls
 
 ## Task 3
 

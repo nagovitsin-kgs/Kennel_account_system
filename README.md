@@ -87,12 +87,12 @@ HumanFriends.txt  Pets.txt
 
 ![Task 1](/Task1.png)
 
-2. Создать директорию, переместить файл туда.
+2. Работа с директориями в Linux
+    - Создать новую директорию и переместить туда файл "Human Friends".
 
-![Task 2](https://user-images.githubusercontent.com/99810114/221401198-5f035f3b-dabb-425a-ae4a-b273822b26bc.jpg)
+![Task 2](/Task2.png)
 
-3. Подключить дополнительный репозиторий MySQL. Установить любой пакет
-   из этого репозитория.
+3. Подключить дополнительный репозиторий MySQL. Установить любой пакет из этого репозитория.
 
 ![Task 3](https://user-images.githubusercontent.com/99810114/221401204-319e6e99-7b30-4da1-a0ca-db5d821146c8.jpg)
 ![Task 4](https://user-images.githubusercontent.com/99810114/221401211-7563ea97-23dc-4f39-807a-fc6e4a68b598.jpg)
