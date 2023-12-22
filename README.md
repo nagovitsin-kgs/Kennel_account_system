@@ -213,7 +213,7 @@ sudo dpkg --purge имя_пакета
 
 [UML.drawio](/UML.drawio)
 
-7. Работа с MySQL (Задача выполняется в случае успешного выполнения задачи “Работа с MySQL в Linux. “Установить MySQL на вашу машину”
+7. Работа с MySQL.
 
 7.1. После создания диаграммы классов в 6 пункте, в 7 пункте база данных "Human Friends" должна быть структурирована в соответствии с этой диаграммой.
 
@@ -227,56 +227,15 @@ sudo dpkg --purge имя_пакета
 -   Создать новую таблицу для животных в возрасте от 1 до 3 лет и вычислить их возраст с точностью до месяца.
 -   Объединить все созданные таблицы в одну, сохраняя информацию о принадлежности к исходным таблицам.
 
-Пример заполненной таблицы для теста:
-
-Лист "Pets"
-
-ID Name Type BirthDate Commands
-
-1 Fido Dog 2020-01-01 Sit, Stay, Fetch
-
-2 Whiskers Cat 2019-05-15 Sit, Pounce
-
-3 Hammy Hamster 2021-03-10 Roll, Hide
-
-4 Buddy Dog 2018-12-10 Sit, Paw, Bark
-
-5 Smudge Cat 2020-02-20 Sit, Pounce, Scratch
-
-6 Peanut Hamster 2021-08-01 Roll, Spin
-
-7 Bella Dog 2019-11-11 Sit, Stay, Roll
-
-8 Oliver Cat 2020-06-30 Meow, Scratch, Jump
-
-Лист "PackAnimals"
-
-ID Name Type BirthDate Commands
-
-1 Thunder Horse 2015-07-21 Trot, Canter, Gallop
-
-2 Sandy Camel 2016-11-03 Walk, Carry Load
-
-3 Eeyore Donkey 2017-09-18 Walk, Carry Load, Bray
-
-4 Storm Horse 2014-05-05 Trot, Canter
-
-5 Dune Camel 2018-12-12 Walk, Sit
-
-6 Burro Donkey 2019-01-23 Walk, Bray, Kick
-
-7 Blaze Horse 2016-02-29 Trot, Jump, Gallop
-
-8 Sahara Camel 2015-08-14 Walk, Run
-
 ```sql
-CREATE DATABASE Human_friends;
-```
+-- создание БД
+DROP DATABASE IF EXISTS human_friends;
+CREATE DATABASE human_friends;
 
-8. Создать таблицы с иерархией из диаграммы в БД
+-- подключение к БД
+USE human_friends;
 
-```sql
-USE Human_friends;
+-- Создать таблицы, соответствующие иерархии из вашей диаграммы классов.
 CREATE TABLE animal_classes
 (
 	Id INT AUTO_INCREMENT PRIMARY KEY,
@@ -287,29 +246,28 @@ INSERT INTO animal_classes (Class_name)
 VALUES ('вьючные'),
 ('домашние');
 
-
-CREATE TABLE packed_animals
+CREATE TABLE pack_animals
 (
-	  Id INT AUTO_INCREMENT PRIMARY KEY,
+	Id INT AUTO_INCREMENT PRIMARY KEY,
     Genus_name VARCHAR (20),
     Class_id INT,
     FOREIGN KEY (Class_id) REFERENCES animal_classes (Id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-INSERT INTO packed_animals (Genus_name, Class_id)
+INSERT INTO pack_animals (Genus_name, Class_id)
 VALUES ('Лошади', 1),
 ('Ослы', 1),
 ('Верблюды', 1);
 
-CREATE TABLE home_animals
+CREATE TABLE pets
 (
-	  Id INT AUTO_INCREMENT PRIMARY KEY,
+	Id INT AUTO_INCREMENT PRIMARY KEY,
     Genus_name VARCHAR (20),
     Class_id INT,
     FOREIGN KEY (Class_id) REFERENCES animal_classes (Id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-INSERT INTO home_animals (Genus_name, Class_id)
+INSERT INTO pets (Genus_name, Class_id)
 VALUES ('Кошки', 2),
 ('Собаки', 2),
 ('Хомяки', 2);
@@ -321,14 +279,12 @@ CREATE TABLE cats
     Birthday DATE,
     Commands VARCHAR(50),
     Genus_id int,
-    Foreign KEY (Genus_id) REFERENCES home_animals (Id) ON DELETE CASCADE ON UPDATE CASCADE
+    Foreign KEY (Genus_id) REFERENCES pets (Id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 ```
 
-9. Заполнить низкоуровневые таблицы именами(животных), командами
-   которые они выполняют и датами рождения
-
 ```sql
+-- Заполнить таблицы данными о животных, их командах и датами рождения
 INSERT INTO cats (Name, Birthday, Commands, Genus_id)
 VALUES ('Пупа', '2011-01-01', 'кс-кс-кс', 1),
 ('Олег', '2016-01-01', "отставить!", 1),
@@ -341,7 +297,7 @@ CREATE TABLE dogs
     Birthday DATE,
     Commands VARCHAR(50),
     Genus_id int,
-    Foreign KEY (Genus_id) REFERENCES home_animals (Id) ON DELETE CASCADE ON UPDATE CASCADE
+    Foreign KEY (Genus_id) REFERENCES pets (Id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 INSERT INTO dogs (Name, Birthday, Commands, Genus_id)
 VALUES ('Дик', '2020-01-01', 'ко мне, лежать, лапу, голос', 2),
@@ -356,7 +312,7 @@ CREATE TABLE hamsters
     Birthday DATE,
     Commands VARCHAR(50),
     Genus_id int,
-    Foreign KEY (Genus_id) REFERENCES home_animals (Id) ON DELETE CASCADE ON UPDATE CASCADE
+    Foreign KEY (Genus_id) REFERENCES pets (Id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 INSERT INTO hamsters (Name, Birthday, Commands, Genus_id)
 VALUES ('Малой', '2020-10-12', '', 3),
@@ -371,7 +327,7 @@ CREATE TABLE horses
     Birthday DATE,
     Commands VARCHAR(50),
     Genus_id int,
-    Foreign KEY (Genus_id) REFERENCES packed_animals (Id) ON DELETE CASCADE ON UPDATE CASCADE
+    Foreign KEY (Genus_id) REFERENCES pack_animals (Id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 INSERT INTO horses (Name, Birthday, Commands, Genus_id)
 VALUES ('Гром', '2020-01-12', 'бегом, шагом', 1),
@@ -386,7 +342,7 @@ CREATE TABLE donkeys
     Birthday DATE,
     Commands VARCHAR(50),
     Genus_id int,
-    Foreign KEY (Genus_id) REFERENCES packed_animals (Id) ON DELETE CASCADE ON UPDATE CASCADE
+    Foreign KEY (Genus_id) REFERENCES pack_animals (Id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 INSERT INTO donkeys (Name, Birthday, Commands, Genus_id)
 VALUES ('Первый', '2019-04-10', NULL, 2),
@@ -401,7 +357,7 @@ CREATE TABLE camels
     Birthday DATE,
     Commands VARCHAR(50),
     Genus_id int,
-    Foreign KEY (Genus_id) REFERENCES packed_animals (Id) ON DELETE CASCADE ON UPDATE CASCADE
+    Foreign KEY (Genus_id) REFERENCES pack_animals (Id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 INSERT INTO camels (Name, Birthday, Commands, Genus_id)
 VALUES ('Горбатый', '2022-04-10', 'вернись', 3),
@@ -410,10 +366,8 @@ VALUES ('Горбатый', '2022-04-10', 'вернись', 3),
 ('Борода', '2022-12-10', "улыбнись", 3);
 ```
 
-10. Удалив из таблицы верблюдов, т.к. верблюдов решили перевезти в другой
-    питомник на зимовку. Объединить таблицы лошади, и ослы в одну таблицу.
-
 ```sql
+-- Удалить записи о верблюдах и объединить таблицы лошадей и ослов.
 SET SQL_SAFE_UPDATES = 0;
 DELETE FROM camels;
 
@@ -421,13 +375,10 @@ SELECT Name, Birthday, Commands FROM horses
 UNION SELECT  Name, Birthday, Commands FROM donkeys;
 ```
 
-11. Создать новую таблицу “молодые животные” в которую попадут все
-    животные старше 1 года, но младше 3 лет и в отдельном столбце с точностью
-    до месяца подсчитать возраст животных в новой таблице
-
 ```sql
+-- Создать новую таблицу для животных в возрасте от 1 до 3 лет и вычислить их возраст с точностью до месяца.
 CREATE TEMPORARY TABLE animals AS
-SELECT *, 'Лошади' as genus FROM horses
+SELECT *, 'Лошади' AS genus FROM horses
 UNION SELECT *, 'Ослы' AS genus FROM donkeys
 UNION SELECT *, 'Собаки' AS genus FROM dogs
 UNION SELECT *, 'Кошки' AS genus FROM cats
@@ -440,34 +391,32 @@ FROM animals WHERE Birthday BETWEEN ADDDATE(curdate(), INTERVAL -3 YEAR) AND ADD
 SELECT * FROM yang_animal;
 ```
 
-12. Объединить все таблицы в одну, при этом сохраняя поля, указывающие на
-    прошлую принадлежность к старым таблицам.
-
 ```sql
+-- Объединить все созданные таблицы в одну, сохраняя информацию о принадлежности к исходным таблицам.
 SELECT h.Name, h.Birthday, h.Commands, pa.Genus_name, ya.Age_in_month
 FROM horses h
 LEFT JOIN yang_animal ya ON ya.Name = h.Name
-LEFT JOIN packed_animals pa ON pa.Id = h.Genus_id
+LEFT JOIN pack_animals pa ON pa.Id = h.Genus_id
 UNION
 SELECT d.Name, d.Birthday, d.Commands, pa.Genus_name, ya.Age_in_month
 FROM donkeys d
 LEFT JOIN yang_animal ya ON ya.Name = d.Name
-LEFT JOIN packed_animals pa ON pa.Id = d.Genus_id
+LEFT JOIN pack_animals pa ON pa.Id = d.Genus_id
 UNION
 SELECT c.Name, c.Birthday, c.Commands, ha.Genus_name, ya.Age_in_month
 FROM cats c
 LEFT JOIN yang_animal ya ON ya.Name = c.Name
-LEFT JOIN home_animals ha ON ha.Id = c.Genus_id
+LEFT JOIN pets ha ON ha.Id = c.Genus_id
 UNION
 SELECT d.Name, d.Birthday, d.Commands, ha.Genus_name, ya.Age_in_month
 FROM dogs d
 LEFT JOIN yang_animal ya ON ya.Name = d.Name
-LEFT JOIN home_animals ha ON ha.Id = d.Genus_id
+LEFT JOIN pets ha ON ha.Id = d.Genus_id
 UNION
 SELECT hm.Name, hm.Birthday, hm.Commands, ha.Genus_name, ya.Age_in_month
 FROM hamsters hm
 LEFT JOIN yang_animal ya ON ya.Name = hm.Name
-LEFT JOIN home_animals ha ON ha.Id = hm.Genus_id;
+LEFT JOIN pets ha ON ha.Id = hm.Genus_id;
 ```
 
 13. Создать [класс с Инкапсуляцией методов и наследованием по диаграмме](https://github.com/ILYA-NASA/Kennel_account_system/tree/main/System/src/Model).
